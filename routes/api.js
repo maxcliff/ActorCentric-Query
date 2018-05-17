@@ -4,7 +4,9 @@ const Actor = require('../models/actor');
 
 //get a list of actors from db  
 router.get('/actors', function(req, res, next){
-    res.send({type: 'GET'});
+    Actor.find({}).then(function(actors){
+        res.send(actors);
+    });
 });
 
 //add a new actor

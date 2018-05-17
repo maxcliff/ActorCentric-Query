@@ -1,6 +1,20 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+
+//create geolocation schema
+const GeoSchema = new Schema({
+    type: {
+        type: String,
+        default: "Point"
+        
+    },
+    coordinates: {
+        type: [Number],
+        index: "2dsphere"
+    }
+    
+});
 //create actor schema 
 const ActorSchema = new Schema({
     name: {
@@ -22,10 +36,8 @@ const ActorSchema = new Schema({
     timePeriod: {
         type: String
 
-    }
-
-    //add in geo location
-
+    },
+    geometry: GeoSchema
 });
 
 const Actors= mongoose.model('actor', ActorSchema);

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Query</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="styles.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <h1 class= "title">Actor-Centric Query</h1>
+    <div id= "homepage">
+        <h1>Find the actor</h1>
+        <div id= "actors"></div>
+    </div>  
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/react@15/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+
+    <!--create react component-->
+    <script type= "text/babel">
+
+        var Actors = React.createClass({
+            getInitialState: function(){
+                return({
+                    actors:[]
+                });
+            },
+            render: function(){
+                var actors= this.state.actors;
+                actors = actors.map(function(actor, index){
+                    return(
+                        <li key={index}>
+                            <span className="name">{actor.obj.name}</span>
+                            <span className="targets">{actor.obj.targets}</span>
+                            <span className="actions">{actor.obj.actions}</span>
+                            <span className="activity">{actor.obj.timePeriod}</span>  
+                        </li>
+                    );
+                });
+                    return(
+                        <div id= "actor-container">
+                            <form id= "search" onSubmit={this.handleSubmit}>
+                                <label>Enter the Actor:</label>
+                                <input type= "text" ref="act" placeholder="actor" required/>
+                                <input type= "submit" values= "Find Actors"/>
+                            </form>
+                            <ul>{actors}</ul>
+                        </div>
+                );
+            },
+            handleSubmit: function(e){
+                e.preventDefault();
+                var act= this.refs.act.value;
+
+                fetch('/api/actors?act'+ act).then(function(data){
+                    return data.json();
+                }).then(json=>{
+                    this.setState({
+                        actors:json
+                })
+            }
+        });
+
+        ReactDOM.render(<Actors/>, document.getElementById('actors'))
+
+        </script>
+    </body>
+</html>
